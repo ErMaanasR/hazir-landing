@@ -1,6 +1,3 @@
-// Google Apps Script Web App URL - we'll add this after setting up Google Sheets
-const GOOGLE_SCRIPT_URL = 'YOUR_GOOGLE_SCRIPT_URL_HERE';
-
 // Handle Employer Form Submission
 document.getElementById('employerForm').addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -12,7 +9,7 @@ document.getElementById('employerForm').addEventListener('submit', async functio
         business: this.business.value,
         location: this.location.value,
         requirement: this.requirement.value,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
     };
 
     await submitForm(this, formData);
@@ -38,8 +35,8 @@ document.getElementById('employeeForm').addEventListener('submit', async functio
         age: this.age.value,
         location: this.location.value,
         skills: skills,
-        experience: this.experience.value,
-        timestamp: new Date().toISOString()
+        experience: this.experience.value || 'Not specified',
+        timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
     };
 
     await submitForm(this, formData);
@@ -53,21 +50,17 @@ async function submitForm(form, data) {
     submitBtn.textContent = 'Submitting...';
 
     try {
-        // For now, just console log and show success
-        // We'll connect to Google Sheets in next step
         console.log('Form data:', data);
         
-        // Simulate API call
         await new Promise(resolve => setTimeout(resolve, 1000));
         
         showMessage(form, 'Success! We will contact you on WhatsApp within 30 minutes.', 'success');
         form.reset();
         
-        // Redirect to WhatsApp after 2 seconds
         setTimeout(() => {
             const message = data.type === 'employer' 
-                ? `Hi, I submitted the employer form. Name: ${data.name}, Need: ${data.requirement}`
-                : `Hi, I submitted the worker registration. Name: ${data.name}, Skills: ${data.skills}`;
+                ? `Hi, I need workers for my business.\n\nName: ${data.name}\nBusiness: ${data.business}\nLocation: ${data.location}\nRequirement: ${data.requirement}`
+                : `Hi, I want to register as a worker.\n\nName: ${data.name}\nAge: ${data.age}\nLocation: ${data.location}\nSkills: ${data.skills}\nExperience: ${data.experience}`;
             
             window.open(`https://wa.me/918180092971?text=${encodeURIComponent(message)}`, '_blank');
         }, 2000);
@@ -82,22 +75,18 @@ async function submitForm(form, data) {
 }
 
 function showMessage(form, text, type) {
-    // Remove existing messages
     const existingMsg = form.querySelector('.message');
     if (existingMsg) existingMsg.remove();
     
-    // Create new message
     const msg = document.createElement('div');
     msg.className = `message ${type}`;
     msg.textContent = text;
     
     form.insertBefore(msg, form.firstChild);
     
-    // Auto-remove after 5 seconds
     setTimeout(() => msg.remove(), 5000);
 }
 
-// Smooth scroll for anchor links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
