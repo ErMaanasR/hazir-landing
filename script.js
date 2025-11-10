@@ -2,42 +2,41 @@ let currentLang = 'en';
 
 // Language Toggle
 document.getElementById('langToggle').addEventListener('click', function() {
-    currentLang = currentLang === 'en' ? 'hi' : 'en';
+    document.body.classList.add('lang-transitioning');
     
-    if (currentLang === 'hi') {
-        this.textContent = 'View in English';
-        document.querySelector('.lang-toggle-text').innerHTML = 'काम ढूंढ रहे हैं? <span class="accent">पंजीकरण करें</span>';
-    } else {
-        this.textContent = 'हिंदी में देखें';
-        document.querySelector('.lang-toggle-text').innerHTML = 'Looking for Work? <span class="accent">Register</span>';
-    }
-    
-    document.querySelectorAll('.lang-field').forEach(field => {
-        if (field.tagName === 'INPUT' || field.tagName === 'TEXTAREA') {
-            field.placeholder = field.getAttribute(`data-${currentLang}`);
-        } else if (field.tagName === 'SELECT') {
-            field.querySelector('option').textContent = field.querySelector('option').getAttribute(`data-${currentLang}`);
-        }
-    });
-    
-    document.querySelectorAll('.lang-text').forEach(elem => {
-        const text = elem.getAttribute(`data-${currentLang}`);
-        if (text) {
-            if (elem.tagName === 'BUTTON') {
-                elem.textContent = text;
-            } else if (elem.tagName === 'LABEL' || elem.tagName === 'SPAN') {
-                elem.childNodes[0].textContent = text;
-            } else {
-                const link = elem.querySelector('a');
-                if (link) {
-                    const linkHtml = link.outerHTML;
-                    elem.innerHTML = text + ' ' + linkHtml;
-                } else {
-                    elem.textContent = text;
-                }
+    setTimeout(() => {
+        currentLang = currentLang === 'en' ? 'hi' : 'en';
+        
+        this.textContent = currentLang === 'en' ? 'हिंदी' : 'English';
+        
+        // Update all text elements
+        document.querySelectorAll('.lang-text').forEach(elem => {
+            const text = elem.getAttribute(`data-${currentLang}`);
+            if (text) {
+                elem.innerHTML = text;
             }
-        }
-    });
+        });
+        
+        // Update all input/textarea placeholders
+        document.querySelectorAll('.lang-field').forEach(field => {
+            const placeholder = field.getAttribute(`data-${currentLang}`);
+            if (placeholder) {
+                field.placeholder = placeholder;
+            }
+        });
+        
+        // Update all select dropdowns
+        document.querySelectorAll('.lang-select').forEach(select => {
+            Array.from(select.options).forEach(option => {
+                const text = option.getAttribute(`data-${currentLang}`);
+                if (text) {
+                    option.textContent = text;
+                }
+            });
+        });
+        
+        document.body.classList.remove('lang-transitioning');
+    }, 150);
 });
 
 // Handle Employer Form Submission
