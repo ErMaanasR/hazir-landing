@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Hazir - Workers Ready When You Need | Powai</title>
     <meta name="description" content="Need workers in Powai? Get electricians, plumbers, cleaners on-demand. Pay only for hours worked.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -102,56 +102,48 @@
                         <img src="images/skill-electrician.jpg" alt="Electrician">
                     </div>
                     <h3>Electrician</h3>
-                    <p class="rate">₹200/hour</p>
                 </div>
                 <div class="skill-card">
                     <div class="skill-icon">
                         <img src="images/skill-plumber.jpg" alt="Plumber">
                     </div>
                     <h3>Plumber</h3>
-                    <p class="rate">₹180/hour</p>
                 </div>
                 <div class="skill-card">
                     <div class="skill-icon">
                         <img src="images/skill-carpenter.jpg" alt="Carpenter">
                     </div>
                     <h3>Carpenter</h3>
-                    <p class="rate">₹220/hour</p>
                 </div>
                 <div class="skill-card">
                     <div class="skill-icon">
                         <img src="images/skill-painter.jpg" alt="Painter">
                     </div>
                     <h3>Painter</h3>
-                    <p class="rate">₹150/hour</p>
                 </div>
                 <div class="skill-card">
                     <div class="skill-icon">
                         <img src="images/skill-cleaner.jpg" alt="Cleaner">
                     </div>
                     <h3>Cleaner</h3>
-                    <p class="rate">₹120/hour</p>
                 </div>
                 <div class="skill-card">
                     <div class="skill-icon">
                         <img src="images/skill-packer.jpg" alt="Packer">
                     </div>
                     <h3>Packer/Helper</h3>
-                    <p class="rate">₹100/hour</p>
                 </div>
                 <div class="skill-card">
                     <div class="skill-icon">
                         <img src="images/skill-store.jpg" alt="Store Assistant">
                     </div>
                     <h3>Store Assistant</h3>
-                    <p class="rate">₹140/hour</p>
                 </div>
                 <div class="skill-card">
                     <div class="skill-icon">
                         <img src="images/skill-delivery.jpg" alt="Delivery">
                     </div>
                     <h3>Delivery Helper</h3>
-                    <p class="rate">₹100/hour</p>
                 </div>
             </div>
         </div>
@@ -163,7 +155,7 @@
             <h2>Need Workers? <span class="accent">Start Here</span></h2>
             <form id="employerForm" class="contact-form">
                 <input type="text" name="name" placeholder="Your Name *" required>
-                <input type="tel" name="phone" placeholder="WhatsApp Number *" pattern="[0-9]{10}" required>
+                <input type="tel" name="phone" placeholder="WhatsApp Number (10 digits) *" pattern="[0-9]{10}" required>
                 <input type="text" name="business" placeholder="Business/Shop Name">
                 <select name="location" required>
                     <option value="">Select Location in Powai *</option>
@@ -174,8 +166,28 @@
                     <option value="Vikhroli">Vikhroli</option>
                     <option value="Other Powai">Other Powai Area</option>
                 </select>
-                <textarea name="requirement" placeholder="What work do you need? When? How many hours? *" rows="4" required></textarea>
-                <button type="submit" class="btn btn-primary">Submit - We'll Call in 30 Min</button>
+                <select name="skill" required>
+                    <option value="">Select Required Skill *</option>
+                    <option value="Electrician">Electrician</option>
+                    <option value="Plumber">Plumber</option>
+                    <option value="Carpenter">Carpenter</option>
+                    <option value="Painter">Painter</option>
+                    <option value="Cleaner">Cleaner</option>
+                    <option value="Packer/Helper">Packer/Helper</option>
+                    <option value="Store Assistant">Store Assistant</option>
+                    <option value="Delivery Helper">Delivery Helper</option>
+                </select>
+                <input type="date" name="date" required>
+                <select name="timeslot" required>
+                    <option value="">Select Time Slot *</option>
+                    <option value="Morning (6 AM - 12 PM)">Morning (6 AM - 12 PM)</option>
+                    <option value="Afternoon (12 PM - 6 PM)">Afternoon (12 PM - 6 PM)</option>
+                    <option value="Evening (6 PM - 12 AM)">Evening (6 PM - 12 AM)</option>
+                    <option value="Full Day (6 AM - 6 PM)">Full Day (6 AM - 6 PM)</option>
+                </select>
+                <input type="number" name="hours" placeholder="Estimated Hours *" min="1" max="24" required>
+                <textarea name="additional" placeholder="Any additional requirements (optional)" rows="3"></textarea>
+                <button type="submit" class="btn btn-primary">Submit - We'll Contact You</button>
                 <p class="form-note">Or WhatsApp directly: <a href="https://wa.me/918180092971">8180092971</a></p>
             </form>
         </div>
@@ -184,34 +196,37 @@
     <!-- Employee Form -->
     <section class="form-section grey-bg" id="employee-form">
         <div class="container">
-            <h2>Looking for Work? <span class="accent">Register</span></h2>
+            <div class="form-header">
+                <h2 class="lang-toggle-text">Looking for Work? <span class="accent">Register</span></h2>
+                <button id="langToggle" class="lang-toggle-btn">हिंदी में देखें</button>
+            </div>
             <form id="employeeForm" class="contact-form">
-                <input type="text" name="name" placeholder="Your Name *" required>
-                <input type="tel" name="phone" placeholder="WhatsApp Number *" pattern="[0-9]{10}" required>
-                <input type="number" name="age" placeholder="Age *" min="18" max="65" required>
-                <select name="location" required>
-                    <option value="">Where do you live? *</option>
+                <input type="text" name="name" class="lang-field" data-en="Your Name *" data-hi="आपका नाम *" placeholder="Your Name *" required>
+                <input type="tel" name="phone" class="lang-field" data-en="WhatsApp Number (10 digits) *" data-hi="व्हाट्सएप नंबर (10 अंक) *" placeholder="WhatsApp Number (10 digits) *" pattern="[0-9]{10}" required>
+                <input type="number" name="age" class="lang-field" data-en="Age *" data-hi="उम्र *" placeholder="Age *" min="18" max="65" required>
+                <select name="location" class="lang-field" required>
+                    <option value="" data-en="Where do you live? *" data-hi="आप कहाँ रहते हैं? *">Where do you live? *</option>
                     <option value="Powai Plaza">Powai Plaza</option>
                     <option value="Hiranandani Gardens">Hiranandani Gardens</option>
                     <option value="Chandivali">Chandivali</option>
                     <option value="Kanjurmarg">Kanjurmarg</option>
                     <option value="Vikhroli">Vikhroli</option>
-                    <option value="Other Powai">Other Powai Area</option>
+                    <option value="Other Powai" data-en="Other Powai Area" data-hi="अन्य पोवई क्षेत्र">Other Powai Area</option>
                 </select>
                 <div class="checkbox-group">
-                    <label class="checkbox-label">Skills (select all that apply) *</label>
-                    <label><input type="checkbox" name="skills" value="Electrician"> Electrician</label>
-                    <label><input type="checkbox" name="skills" value="Plumber"> Plumber</label>
-                    <label><input type="checkbox" name="skills" value="Carpenter"> Carpenter</label>
-                    <label><input type="checkbox" name="skills" value="Painter"> Painter</label>
-                    <label><input type="checkbox" name="skills" value="Cleaner"> Cleaner</label>
-                    <label><input type="checkbox" name="skills" value="Packer"> Packer/Helper</label>
-                    <label><input type="checkbox" name="skills" value="Store Assistant"> Store Assistant</label>
-                    <label><input type="checkbox" name="skills" value="Delivery"> Delivery Helper</label>
+                    <label class="checkbox-label lang-text" data-en="Skills (select all that apply) *" data-hi="कौशल (सभी लागू का चयन करें) *">Skills (select all that apply) *</label>
+                    <label><input type="checkbox" name="skills" value="Electrician"> <span class="lang-text" data-en="Electrician" data-hi="बिजली मिस्त्री">Electrician</span></label>
+                    <label><input type="checkbox" name="skills" value="Plumber"> <span class="lang-text" data-en="Plumber" data-hi="प्लंबर">Plumber</span></label>
+                    <label><input type="checkbox" name="skills" value="Carpenter"> <span class="lang-text" data-en="Carpenter" data-hi="बढ़ई">Carpenter</span></label>
+                    <label><input type="checkbox" name="skills" value="Painter"> <span class="lang-text" data-en="Painter" data-hi="पेंटर">Painter</span></label>
+                    <label><input type="checkbox" name="skills" value="Cleaner"> <span class="lang-text" data-en="Cleaner" data-hi="सफाईकर्मी">Cleaner</span></label>
+                    <label><input type="checkbox" name="skills" value="Packer"> <span class="lang-text" data-en="Packer/Helper" data-hi="पैकर/सहायक">Packer/Helper</span></label>
+                    <label><input type="checkbox" name="skills" value="Store Assistant"> <span class="lang-text" data-en="Store Assistant" data-hi="दुकान सहायक">Store Assistant</span></label>
+                    <label><input type="checkbox" name="skills" value="Delivery"> <span class="lang-text" data-en="Delivery Helper" data-hi="डिलीवरी सहायक">Delivery Helper</span></label>
                 </div>
-                <input type="text" name="experience" placeholder="Years of experience">
-                <button type="submit" class="btn btn-primary">Register - We'll Contact You</button>
-                <p class="form-note">Or WhatsApp directly: <a href="https://wa.me/918180092971">8180092971</a></p>
+                <input type="text" name="experience" class="lang-field" data-en="Years of experience" data-hi="अनुभव के वर्ष" placeholder="Years of experience">
+                <button type="submit" class="btn btn-primary lang-text" data-en="Register - We'll Contact You" data-hi="पंजीकरण करें - हम संपर्क करेंगे">Register - We'll Contact You</button>
+                <p class="form-note lang-text" data-en="Or WhatsApp directly:" data-hi="या सीधे व्हाट्सएप करें:">Or WhatsApp directly: <a href="https://wa.me/918180092971">8180092971</a></p>
             </form>
         </div>
     </section>

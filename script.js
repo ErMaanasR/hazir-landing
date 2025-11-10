@@ -1,3 +1,45 @@
+let currentLang = 'en';
+
+// Language Toggle
+document.getElementById('langToggle').addEventListener('click', function() {
+    currentLang = currentLang === 'en' ? 'hi' : 'en';
+    
+    if (currentLang === 'hi') {
+        this.textContent = 'View in English';
+        document.querySelector('.lang-toggle-text').innerHTML = 'काम ढूंढ रहे हैं? <span class="accent">पंजीकरण करें</span>';
+    } else {
+        this.textContent = 'हिंदी में देखें';
+        document.querySelector('.lang-toggle-text').innerHTML = 'Looking for Work? <span class="accent">Register</span>';
+    }
+    
+    document.querySelectorAll('.lang-field').forEach(field => {
+        if (field.tagName === 'INPUT' || field.tagName === 'TEXTAREA') {
+            field.placeholder = field.getAttribute(`data-${currentLang}`);
+        } else if (field.tagName === 'SELECT') {
+            field.querySelector('option').textContent = field.querySelector('option').getAttribute(`data-${currentLang}`);
+        }
+    });
+    
+    document.querySelectorAll('.lang-text').forEach(elem => {
+        const text = elem.getAttribute(`data-${currentLang}`);
+        if (text) {
+            if (elem.tagName === 'BUTTON') {
+                elem.textContent = text;
+            } else if (elem.tagName === 'LABEL' || elem.tagName === 'SPAN') {
+                elem.childNodes[0].textContent = text;
+            } else {
+                const link = elem.querySelector('a');
+                if (link) {
+                    const linkHtml = link.outerHTML;
+                    elem.innerHTML = text + ' ' + linkHtml;
+                } else {
+                    elem.textContent = text;
+                }
+            }
+        }
+    });
+});
+
 // Handle Employer Form Submission
 document.getElementById('employerForm').addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -6,9 +48,13 @@ document.getElementById('employerForm').addEventListener('submit', async functio
         type: 'employer',
         name: this.name.value,
         phone: this.phone.value,
-        business: this.business.value,
+        business: this.business.value || 'Not provided',
         location: this.location.value,
-        requirement: this.requirement.value,
+        skill: this.skill.value,
+        date: this.date.value,
+        timeslot: this.timeslot.value,
+        hours: this.hours.value,
+        additional: this.additional.value || 'None',
         timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
     };
 
@@ -24,7 +70,7 @@ document.getElementById('employeeForm').addEventListener('submit', async functio
         .join(', ');
 
     if (!skills) {
-        showMessage(this, 'Please select at least one skill', 'error');
+        showMessage(this, currentLang === 'en' ? 'Please select at least one skill' : 'कृपया कम से कम एक कौशल चुनें', 'error');
         return;
     }
 
@@ -47,27 +93,38 @@ async function submitForm(form, data) {
     const originalText = submitBtn.textContent;
     
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Submitting...';
+    submitBtn.textContent = currentLang === 'en' ? 'Submitting...' : 'जमा किया जा रहा है...';
 
     try {
         console.log('Form data:', data);
         
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise(resolve => setTimeout(resolve, 800));
         
-        showMessage(form, 'Success! We will contact you on WhatsApp within 30 minutes.', 'success');
+        const successMsg = currentLang === 'en' 
+            ? 'Success! Redirecting to WhatsApp...' 
+            : 'सफलता! व्हाट्सएप पर भेजा जा रहा है...';
+        showMessage(form, successMsg, 'success');
+        
         form.reset();
         
         setTimeout(() => {
-            const message = data.type === 'employer' 
-                ? `Hi, I need workers for my business.\n\nName: ${data.name}\nBusiness: ${data.business}\nLocation: ${data.location}\nRequirement: ${data.requirement}`
-                : `Hi, I want to register as a worker.\n\nName: ${data.name}\nAge: ${data.age}\nLocation: ${data.location}\nSkills: ${data.skills}\nExperience: ${data.experience}`;
+            let message;
+            if (data.type === 'employer') {
+                message = `Hi, I need workers for my business.\n\nName: ${data.name}\nPhone: ${data.phone}\nBusiness: ${data.business}\nLocation: ${data.location}\nSkill Required: ${data.skill}\nDate: ${data.date}\nTime: ${data.timeslot}\nHours: ${data.hours}\nAdditional: ${data.additional}`;
+            } else {
+                message = `Hi, I want to register as a worker.\n\nName: ${data.name}\nPhone: ${data.phone}\nAge: ${data.age}\nLocation: ${data.location}\nSkills: ${data.skills}\nExperience: ${data.experience}`;
+            }
             
-            window.open(`https://wa.me/918180092971?text=${encodeURIComponent(message)}`, '_blank');
-        }, 2000);
+            const whatsappUrl = `https://wa.me/918180092971?text=${encodeURIComponent(message)}`;
+            window.location.href = whatsappUrl;
+        }, 1500);
         
     } catch (error) {
         console.error('Error:', error);
-        showMessage(form, 'Something went wrong. Please WhatsApp us directly at 8180092971', 'error');
+        const errorMsg = currentLang === 'en'
+            ? 'Something went wrong. Please WhatsApp us directly at 8180092971'
+            : 'कुछ गलत हो गया। कृपया सीधे 8180092971 पर व्हाट्सएप करें';
+        showMessage(form, errorMsg, 'error');
     } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = originalText;

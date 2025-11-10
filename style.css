@@ -576,3 +576,77 @@ footer a:hover {
         padding: 2rem;
     }
 }
+
+/* Language Toggle */
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.form-header h2 {
+    margin-bottom: 0;
+    flex: 1;
+}
+
+.lang-toggle-btn {
+    background: var(--accent-gold);
+    color: var(--primary-black);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.lang-toggle-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+}
+
+/* Mobile Image Sizes */
+@media (max-width: 768px) {
+    .problem-card .icon {
+        width: 120px;
+        height: 120px;
+    }
+
+    .skill-icon {
+        width: 100px;
+        height: 100px;
+    }
+
+    .trust-icon {
+        width: 110px;
+        height: 110px;
+    }
+
+    .skill-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .skill-card h3 {
+        font-size: 1.2rem;
+    }
+}
+
+/* Android viewport fix */
+@media screen and (max-width: 768px) {
+    html {
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+    }
+
+    body {
+        overflow-x: hidden;
+    }
+
+    .container {
+        padding: 0 15px;
+    }
+}
